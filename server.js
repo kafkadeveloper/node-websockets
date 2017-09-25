@@ -15,11 +15,16 @@ const wss = new SocketServer({ server });
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  ws.send('yeni biri var')
   ws.on('close', () => console.log('Client disconnected'));
 });
 
-setInterval(() => {
-  wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString());
-  });
-}, 1000);
+
+  wss.on('message', (message) => {
+    wss.clients.forEach((client) => {
+      client.send(message)
+    })
+  })
+  
+  
+
